@@ -1,0 +1,1 @@
+require('dagger.js').initialize(__dirname);
