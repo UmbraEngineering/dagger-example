@@ -52,13 +52,7 @@ module.exports = {
 	// Socket.IO configuration
 	// 
 	sockets: {
-		enabled: true,
-
-		// 
-		// Sets the default value for the Model::livePush flag. If set to true, changes
-		// on models will be automatically pushed out to active clients.
-		// 
-		livePush: false
+		enabled: true
 	},
 
 // -------------------------------------------------------------
@@ -68,6 +62,15 @@ module.exports = {
 	// 
 	restApi: {
 		enabled: true
+	},
+
+// -------------------------------------------------------------
+	
+	// 
+	// MongoDB configuration
+	// 
+	mongodb: {
+		url: 'mongodb://localhost:27017/db'
 	}
 
 };

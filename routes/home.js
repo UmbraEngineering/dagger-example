@@ -1,5 +1,5 @@
 
-app.Resource.create('Home', {
+app.Resource.create('home', {
 
 	route: '/',
 	parent: null,
