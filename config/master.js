@@ -49,10 +49,29 @@ module.exports = {
 // -------------------------------------------------------------
 	
 	// 
-	// Socket.IO configuration
+	// HTTP configuration
 	// 
-	sockets: {
-		enabled: true
+	http: {
+		enabled: true,
+
+		port: 80,
+		address: '0.0.0.0'
+	},
+
+// -------------------------------------------------------------
+
+	// 
+	// HTTPS configuration
+	// 
+	https: {
+		enabled: false,
+
+		port: 443,
+		address: '0.0.0.0',
+
+		keyFile: 'ssl/key',
+		certFile: 'ssl/cert',
+		caFile: 'ssl/ca'
 	},
 
 // -------------------------------------------------------------
@@ -62,6 +81,17 @@ module.exports = {
 	// 
 	restApi: {
 		enabled: true
+	}
+
+// -------------------------------------------------------------
+	
+	// 
+	// Socket.IO configuration
+	// 
+	sockets: {
+		enabled: true,
+
+		landingPage: 
 	},
 
 // -------------------------------------------------------------
