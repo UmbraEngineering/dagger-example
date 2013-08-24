@@ -31,24 +31,6 @@ module.exports = {
 // -------------------------------------------------------------
 	
 	// 
-	// Multi-instance mode configuration (used for configuring multiple simultaneous
-	// application instances).
-	// 
-	instances: {
-		enabled: false,
-
-		// 
-		// Configuration for the multi-instance mode's redis bus
-		// 
-		redis: {
-			url: 'redis://localhost:6379',
-			pubSubChannel: 'dagger-multi-instance'
-		}
-	},
-
-// -------------------------------------------------------------
-	
-	// 
 	// HTTP configuration
 	// 
 	http: {
@@ -101,6 +83,15 @@ module.exports = {
 	// 
 	mongodb: {
 		url: 'mongodb://localhost:27017/db'
+	},
+
+// -------------------------------------------------------------
+	
+	// 
+	// Redis configuration
+	// 
+	redis: {
+		url: 'redis://localhost:6379'
 	}
 
 };
