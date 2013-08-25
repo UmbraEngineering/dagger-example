@@ -73,7 +73,11 @@ module.exports = {
 	sockets: {
 		enabled: true,
 
-		landingPage: 
+		// 
+		// A landing page can be defined here that will be used when a socket only server
+		// is called via regular HTTP. If not given, a standard 501 error will be given.
+		// 
+		landingPage: null
 	},
 
 // -------------------------------------------------------------
@@ -83,15 +87,6 @@ module.exports = {
 	// 
 	mongodb: {
 		url: 'mongodb://localhost:27017/db'
-	},
-
-// -------------------------------------------------------------
-	
-	// 
-	// Redis configuration
-	// 
-	redis: {
-		url: 'redis://localhost:6379'
 	}
 
 };
