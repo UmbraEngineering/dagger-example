@@ -9,8 +9,8 @@ module.exports = {
 	//   BUSIO     - Logs messages sent and recieved on the redis bus (this will be very verbose)
 	//   SOCKETIO  - Logs messages sent and recieved via Socket.IO (this will be very verbose)
 	//   EVENTS    - Logs messages for all calls to AppObject::emit (this will be very verbose)
-	//   MESSAGE   - Logs messages about standard operation (eg. new instances created, new incoming
-	//               connections, etc.)
+	//   MESSAGE   - Logs messages about standard operation (eg. new incoming connections, model validation
+	//               errors, etc.)
 	//   WARNING   - Logs messages about things that could potentially be problematic but that are
 	//               not technically errors (could include things pertaining to memory leaks, security
 	//               shortcomings, etc.)
