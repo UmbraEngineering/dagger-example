@@ -63,7 +63,7 @@ module.exports = {
 	// 
 	restApi: {
 		enabled: true
-	}
+	},
 
 // -------------------------------------------------------------
 	
@@ -86,7 +86,7 @@ module.exports = {
 	// MongoDB configuration
 	// 
 	mongodb: {
-		url: 'mongodb://localhost:27017/db'
+		url: 'mongodb://testuser:testpass@localhost:27017/dagger'
 	}
 
 };
