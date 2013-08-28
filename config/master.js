@@ -2,24 +2,40 @@
 module.exports = {
 
 	// 
-	// Message types to be logged. Should be an array of any of the following values.
+	// Message logging configuration
 	// 
-	//   NONE      - Silent mode; no messages are logged at all (this has highest priority)
-	//   ALL       - Logs all types of messages
-	//   BUSIO     - Logs messages sent and recieved on the redis bus (this will be very verbose)
-	//   SOCKETIO  - Logs messages sent and recieved via Socket.IO (this will be very verbose)
-	//   EVENTS    - Logs messages for all calls to AppObject::emit (this will be very verbose)
-	//   MESSAGE   - Logs messages about standard operation (eg. new incoming connections, model validation
-	//               errors, etc.)
-	//   WARNING   - Logs messages about things that could potentially be problematic but that are
-	//               not technically errors (could include things pertaining to memory leaks, security
-	//               shortcomings, etc.)
-	//   ERROR     - Logs messages about errors that are minor/one time/non-fatal but that still
-	//               caused a loss of service or bad/incorrect output to the client
-	//   CRITICAL  - Logs messages that are of critical importance, such as fatal errors or failure
-	//               to connect to neccesary resources (like a database)
-	// 
-	logging: ['MESSAGE', 'WARNING', 'ERROR', 'CRITICAL'],
+	logging: {
+		// 
+		// Message types to be logged. Should be an array of any of the following values.
+		// 
+		//   NONE      - Silent mode; no messages are logged at all (this has highest priority)
+		//   ALL       - Logs all types of messages
+		//   BUSIO     - Logs messages sent and recieved on the redis bus (this will be very verbose)
+		//   SOCKETIO  - Logs messages sent and recieved via Socket.IO (this will be very verbose)
+		//   EVENTS    - Logs messages for all calls to AppObject::emit (this will be very verbose)
+		//   MESSAGE   - Logs messages about standard operation (eg. new incoming connections, model validation
+		//               errors, etc.)
+		//   WARNING   - Logs messages about things that could potentially be problematic but that are
+		//               not technically errors (could include things pertaining to memory leaks, security
+		//               shortcomings, etc.)
+		//   ERROR     - Logs messages about errors that are minor/one time/non-fatal but that still
+		//               caused a loss of service or bad/incorrect output to the client
+		//   CRITICAL  - Logs messages that are of critical importance, such as fatal errors or failure
+		//               to connect to neccesary resources (like a database)
+		// 
+		level: ['MESSAGE', 'WARNING', 'ERROR', 'CRITICAL'],
+
+		// 
+		// If set to true, this will override the native {console.log} method to log timestamps before
+		// messages.
+		// 
+		timestamps: true,
+
+		// 
+		// Should Dagger.js add coloring to log messages?
+		// 
+		colorOutput: false
+	},
 
 	// 
 	// If strict mode is enabled, any time a message marked as CRITICAL is logged, the server will
