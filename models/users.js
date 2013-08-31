@@ -53,11 +53,11 @@ var User = app.models.create('users', {
 
 			User.hashPassword({ password: password, salt: this.passwordSalt }).then(
 				function(key) {
-					promise.resolve(key === hashedPassword);
+					promise.resolve(key.key === hashedPassword);
 				},
 				promise.reject);
 
-			return promise.promise;
+			return promise.promise || promise;
 		}
 	},
 
@@ -77,7 +77,7 @@ var User = app.models.create('users', {
 				opts.password = buf.toString('base64');
 				User.hashPassword(opts, promise);
 			});
-			return promise.promise;
+			return promise.promise || promise;
 		}
 
 		// If no salt was given, generate random salt
@@ -90,7 +90,7 @@ var User = app.models.create('users', {
 				opts.salt = buf;
 				User.hashPassword(opts, promise);
 			});
-			return promise.promise;
+			return promise.promise || promise;
 		}
 
 		// Do the hashing..
@@ -105,7 +105,7 @@ var User = app.models.create('users', {
 			});
 		});
 
-		return promise.promise;
+		return promise.promise || promise;
 	}
 
 });

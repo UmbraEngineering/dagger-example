@@ -122,14 +122,42 @@ module.exports = {
 		// The user unique index field (eg. username)
 		// 
 		userField: 'email',
+
+		// 
+		// The field that passwords are stored in, and the property sent to the server
+		// for auth requests containing the password
+		// 
+		passwordField: 'password',
 		
 		// 
 		// A routine for testing a plaintext password against one stored on a user model
 		//   function(model, password, promise)
 		// 
 		testPassword: function(model, password, promise) {
-			model.testPassword(password, promise);
-		}
+			return model.testPassword(password, promise);
+		},
+
+		// 
+		// The API endpoint used for authenticating
+		// 
+		authTokenEndpoint: 'authtokens',
+
+		// 
+		// The HTTP request header used to send auth tokens to the server
+		// 
+		allowAuthTokenHeaders: true,
+		authTokenHeader: 'auth-token',
+
+		// 
+		// The querystring param used to send auth tokens to the server
+		// 
+		allowAuthTokenParams: true,
+		authTokenParam: 'auth_token',
+
+		// 
+		// Time-to-live for auth tokens
+		// 
+		authTokenTTL: '1hr'
 	}
 
 };
