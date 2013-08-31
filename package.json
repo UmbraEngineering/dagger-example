@@ -14,5 +14,9 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/UmbraEngineering/dagger-example/issues"
+  },
+  "dependencies": {
+    "uuid-v4": "~0.1.0",
+    "oath": "~0.2.3"
   }
 }

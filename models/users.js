@@ -1,4 +1,5 @@
 
+var oath    = require('oath');
 var crypto  = require('crypto');
 var app     = require('dagger.js').app;
 
@@ -43,61 +44,63 @@ var User = app.models.create('users', {
 		// 
 		// Tests if the given password matches what's in the database
 		// 
-		testPassword: function(password, callback) {
+		testPassword: function(password, promise) {
+			var promise = promise || new oath();
 			var hashedPassword = this.password;
-			hash({password: password, salt: this.passwordSalt}, function(err, key) {
-				if (err) {
-					return callback(err);
-				}
 
-				callback(null, (key === hashedPassword));
+			User.hashPassword({ password: password, salt: this.passwordSalt }).then(
+				function(key) {
+					promise.resolve(key === hashedPassword);
+				},
+				promise.reject);
+
+			return promise;
+		}
+	},
+
+	// 
+	// User.hashPassword({password, salt, iterations}).then(function({salt, key}))
+	// 
+	hashPassword: function(opts, promise) {
+		promise = promise || new oath();
+
+		// If no password was given, generate one at random
+		if (! opts.password) {
+			return crypto.randomBytes(6, function(err, buf) {
+				if (err) {
+					return oath.reject(err);
+				}
+				
+				opts.password = buf.toString('base64');
+				User.hashPassword(opts, promise);
 			});
 		}
+
+		// If no salt was given, generate random salt
+		if (! opts.salt) {
+			return crypto.randomBytes(64, function(err, buf) {
+				if (err) {
+					return oath.reject(err);
+				}
+
+				opts.salt = buf;
+				User.hashPassword(opts, promise);
+			});
+		}
+
+		// Do the hashing..
+		crypto.pbkdf2(opts.password, opts.salt, 10000, 64, function(err, key) {
+			if (err) {
+				return oath.reject(err);
+			}
+
+			promise.resolve({
+				key: new Buffer(key).toString('base64'),
+				salt: opts.salt
+			});
+		});
+
+		return promise;
 	}
 
 });
-
-// -------------------------------------------------------------
-
-// 
-// hash(opts, callback)
-//   opts: {password, salt, iterations}
-//   callback: function(err, {salt, key})
-// 
-function hash(opts, callback) {
-	// If no password was given, generate one at random
-	if (! opts.password) {
-		return crypto.randomBytes(6, function(err, buf) {
-			if (err) {
-				return callback(err);
-			}
-			
-			opts.password = buf.toString('base64');
-			hash(opts, callback);
-		});
-	}
-
-	// If no salt was given, generate random salt
-	if (! opts.salt) {
-		return crypto.randomBytes(64, function(err, buf) {
-			if (err) {
-				return callback(err);
-			}
-
-			opts.salt = buf;
-			hash(opts, callback);
-		});
-	}
-
-	// Do the hashing..
-	crypto.pbkdf2(opts.password, opts.salt, 10000, 64, function(err, key) {
-		if (err) {
-			return callback(err);
-		}
-
-		callback(null, {
-			key: new Buffer(key).toString('base64'),
-			salt: opts.salt
-		});
-	});
-}

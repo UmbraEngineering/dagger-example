@@ -103,6 +103,33 @@ module.exports = {
 	// 
 	mongodb: {
 		url: 'mongodb://testuser:testpass@localhost:27017/dagger'
+	},
+
+// -------------------------------------------------------------
+	
+	// 
+	// Authentication/authorization configuration
+	// 
+	auth: {
+		enabled: true,
+
+		// 
+		// The model that users are stored in
+		// 
+		userModel: 'users',
+
+		// 
+		// The user unique index field (eg. username)
+		// 
+		userField: 'email',
+		
+		// 
+		// A routine for testing a plaintext password against one stored on a user model
+		//   function(model, password, promise)
+		// 
+		testPassword: function(model, password, promise) {
+			model.testPassword(password, promise);
+		}
 	}
 
 };
