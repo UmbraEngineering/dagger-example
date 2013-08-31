@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "uuid-v4": "~0.1.0",
-    "oath": "~0.2.3"
+    "oath": "~0.2.3",
+    "dagger.js": "0.0.0"
   }
 }

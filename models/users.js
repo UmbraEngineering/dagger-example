@@ -21,11 +21,13 @@ var User = app.models.create('users', {
 				return next();
 			}
 
-			hash({ password: this.password }, function(err, password) {
-				this.password = password.key;
-				this.passwordSalt = password.salt;
-				next();
-			}.bind(this));
+			User.hashPassword({ password: this.password }).then(
+				function(password) {
+					this.password = password.key;
+					this.passwordSalt = password.salt;
+					next();
+				}.bind(this),
+				next);
 		},
 
 		// 
@@ -45,7 +47,8 @@ var User = app.models.create('users', {
 		// Tests if the given password matches what's in the database
 		// 
 		testPassword: function(password, promise) {
-			var promise = promise || new oath();
+			promise = promise || new oath();
+
 			var hashedPassword = this.password;
 
 			User.hashPassword({ password: password, salt: this.passwordSalt }).then(
@@ -54,7 +57,7 @@ var User = app.models.create('users', {
 				},
 				promise.reject);
 
-			return promise;
+			return promise.promise;
 		}
 	},
 
@@ -66,7 +69,7 @@ var User = app.models.create('users', {
 
 		// If no password was given, generate one at random
 		if (! opts.password) {
-			return crypto.randomBytes(6, function(err, buf) {
+			crypto.randomBytes(6, function(err, buf) {
 				if (err) {
 					return oath.reject(err);
 				}
@@ -74,11 +77,12 @@ var User = app.models.create('users', {
 				opts.password = buf.toString('base64');
 				User.hashPassword(opts, promise);
 			});
+			return promise.promise;
 		}
 
 		// If no salt was given, generate random salt
 		if (! opts.salt) {
-			return crypto.randomBytes(64, function(err, buf) {
+			crypto.randomBytes(64, function(err, buf) {
 				if (err) {
 					return oath.reject(err);
 				}
@@ -86,6 +90,7 @@ var User = app.models.create('users', {
 				opts.salt = buf;
 				User.hashPassword(opts, promise);
 			});
+			return promise.promise;
 		}
 
 		// Do the hashing..
@@ -100,7 +105,7 @@ var User = app.models.create('users', {
 			});
 		});
 
-		return promise;
+		return promise.promise;
 	}
 
 });
