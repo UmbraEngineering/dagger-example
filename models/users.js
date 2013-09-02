@@ -9,7 +9,9 @@ var User = app.models.create('users', {
 		name: String,
 		email: {type: app.models.types.Email, index: {unique: true}},
 		password: {type: String, protected: true},
-		passwordSalt: {type: Buffer, protected: true}
+		passwordSalt: {type: Buffer, protected: true},
+		roles: [{type: app.models.types.ObjectId, ref: 'roles'}],
+		perms: { }
 	},
 
 	hooks: {

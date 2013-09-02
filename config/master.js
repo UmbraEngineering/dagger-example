@@ -128,13 +128,18 @@ module.exports = {
 		// for auth requests containing the password
 		// 
 		passwordField: 'password',
+
+		// 
+		// Any fields on the user model that need to be populate for auth to work
+		// 
+		userPopulatedFields: 'roles',
 		
 		// 
 		// A routine for testing a plaintext password against one stored on a user model
-		//   function(model, password, promise)
+		//   function(user, password, promise)
 		// 
-		testPassword: function(model, password, promise) {
-			return model.testPassword(password, promise);
+		testPassword: function(user, password, promise) {
+			return user.testPassword(password, promise);
 		},
 
 		// 
@@ -157,7 +162,15 @@ module.exports = {
 		// 
 		// Time-to-live for auth tokens
 		// 
-		authTokenTTL: '1hr'
+		authTokenTTL: '1hr',
+
+		// 
+		// A routine for testing if the given user has the given permissions
+		//   function(user, [perms, ...], promise)
+		// 
+		hasPermissions: function(user, permissions, promise) {
+			user.hasPermissions(permissions, promise);
+		}
 	}
 
 };
