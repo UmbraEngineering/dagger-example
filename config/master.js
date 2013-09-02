@@ -34,7 +34,7 @@ module.exports = {
 		// 
 		// Should Dagger.js add coloring to log messages?
 		// 
-		colorOutput: false
+		colorOutput: true
 	},
 
 	// 
