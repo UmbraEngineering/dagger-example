@@ -9,8 +9,7 @@ var AuthEntity; app.models.require('auth-entities').resolve(function(Model) {
 
 var User = app.models.create('users', {
 
-	// Allow guests to create new users
-	public: {post: true},
+	public: {create: true},
 
 	schema: {
 		name: String,
@@ -21,7 +20,7 @@ var User = app.models.create('users', {
 		passwordSalt: {type: Buffer, protected: true, readonly: true},
 
 		// This field is required for auth to work
-		auth: {type: app.models.types.ObjectId, ref: 'auth-entities', readonly: true}
+		auth: {type: app.models.types.ObjectId, ref: 'auth-entities', readonly: true, populate: true}
 	},
 
 	hooks: {
@@ -99,10 +98,11 @@ var User = app.models.create('users', {
 		},
 
 		// 
-		// Determines if a given object matches the current object
+		// Determines if the user referred to in the given request object is this one
 		// 
-		ifOwn: function(user) {
-			return user._id === this._id;
+		ifOwn: function(req) {
+			var id = req.params.usersId;
+			return id === this._id;
 		}
 	},
 
