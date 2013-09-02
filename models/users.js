@@ -3,15 +3,25 @@ var oath    = require('oath');
 var crypto  = require('crypto');
 var app     = require('dagger.js').app;
 
+var AuthEntity; app.models.require('auth-entities').resolve(function(Model) {
+	AuthEntity = Model;
+});
+
 var User = app.models.create('users', {
+
+	// Allow guests to create new users
+	public: {post: true},
 
 	schema: {
 		name: String,
 		email: {type: app.models.types.Email, index: {unique: true}},
+
+		// Authentication related fields
 		password: {type: String, protected: true},
-		passwordSalt: {type: Buffer, protected: true},
-		roles: [{type: app.models.types.ObjectId, ref: 'roles'}],
-		perms: { }
+		passwordSalt: {type: Buffer, protected: true, readonly: true},
+
+		// This field is required for auth to work
+		auth: {type: app.models.types.ObjectId, ref: 'auth-entities', readonly: true}
 	},
 
 	hooks: {
@@ -30,6 +40,32 @@ var User = app.models.create('users', {
 					next();
 				}.bind(this),
 				next);
+		},
+
+		// 
+		// When we create a new user, we have to create an AuthEntity to store
+		// its permissions. This is required to use the built-in auth system
+		// 
+		'pre::create': function(next) {
+			var self = this;
+			var entity = new AuthEntity({
+				perms: {
+					users: {
+						read: true,
+						update: 'ifOwn',
+						delete: 'ifOwn'
+					}
+				}
+			});
+
+			entity.save(function(err, entity) {
+				if (err) {
+					return next(err);
+				}
+
+				self.auth = entity;
+				next();
+			});
 		},
 
 		// 
@@ -60,6 +96,13 @@ var User = app.models.create('users', {
 				promise.reject);
 
 			return promise.promise || promise;
+		},
+
+		// 
+		// Determines if a given object matches the current object
+		// 
+		ifOwn: function(user) {
+			return user._id === this._id;
 		}
 	},
 

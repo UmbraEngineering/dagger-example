@@ -128,11 +128,6 @@ module.exports = {
 		// for auth requests containing the password
 		// 
 		passwordField: 'password',
-
-		// 
-		// Any fields on the user model that need to be populate for auth to work
-		// 
-		userPopulatedFields: 'roles',
 		
 		// 
 		// A routine for testing a plaintext password against one stored on a user model
@@ -145,7 +140,7 @@ module.exports = {
 		// 
 		// The API endpoint used for authenticating
 		// 
-		authTokenEndpoint: 'authtokens',
+		authTokenEndpoint: 'auth-tokens',
 
 		// 
 		// The HTTP request header used to send auth tokens to the server
