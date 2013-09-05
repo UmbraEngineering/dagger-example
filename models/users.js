@@ -3,6 +3,9 @@ var oath    = require('oath');
 var crypto  = require('crypto');
 var app     = require('dagger.js').app;
 
+var Email     = app.models.types.Email;
+var ObjectId  = app.models.types.ObjectId;
+
 var AuthEntity; app.models.require('auth-entities').resolve(function(Model) {
 	AuthEntity = Model;
 });
@@ -13,14 +16,14 @@ var User = app.models.create('users', {
 
 	schema: {
 		name: String,
-		email: {type: app.models.types.Email, index: {unique: true}},
+		email: {type: Email, index: {unique: true}},
 
 		// Authentication related fields
 		password: {type: String, protected: true},
 		passwordSalt: {type: Buffer, protected: true, readonly: true},
 
 		// This field is required for auth to work
-		auth: {type: app.models.types.ObjectId, ref: 'auth-entities', readonly: true, populate: true}
+		auth: {type: ObjectId, ref: 'auth-entities', readonly: true, populate: true}
 	},
 
 	hooks: {
