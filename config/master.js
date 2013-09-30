@@ -45,17 +45,20 @@ module.exports = {
 	strictMode: true,
 
 // -------------------------------------------------------------
-
-	app: {
+	
+	// 
+	// API Endpoint Configuration
+	// 
+	endpoints: {
 		// 
-		// Should /schema endpoints be created for each model?
+		// Should "/schema" endpoints be created for each model?
 		// 
-		schemaEndpoints: true,
+		schema: true,
 
 		// 
 		// Should the endpoint "/" give an index of all models and endpoints?
 		// 
-		indexEndpoint: true
+		index: true
 	},
 
 // -------------------------------------------------------------

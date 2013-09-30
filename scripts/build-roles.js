@@ -9,8 +9,8 @@ Role.defineRoles({
 	},
 	// Normal user
 	user: {
-		users: {read: true, update: 'ifSelf', delete: 'ifSelf'},
-		lists: {create: true, read: 'ifOwns', update: 'ifOwns', delete: 'ifOwns'},
-		items: {create: true, read: 'ifOwns', update: 'ifOwns', delete: 'ifOwns'}
+		users: {create: false,  read: true,      update: 'ifSelf',  delete: 'ifSelf'},
+		lists: {create: true,   read: 'ifOwns',  update: 'ifOwns',  delete: 'ifOwns'},
+		items: {create: true,   read: 'ifOwns',  update: 'ifOwns',  delete: 'ifOwns'}
 	}
 });
