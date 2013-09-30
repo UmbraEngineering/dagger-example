@@ -12,11 +12,11 @@ var AuthEntity; app.models.require('auth-entities').resolve(function(Model) {
 
 var User = app.models.create('users', {
 
+	// This allows non-users to register new user accounts
 	public: {create: true},
 
 	schema: {
-		name: String,
-		email: {type: Email, index: {unique: true}},
+		username: String,
 
 		// Authentication related fields
 		password: {type: String, protected: true},
@@ -50,35 +50,32 @@ var User = app.models.create('users', {
 		// 
 		'pre::create': function(next) {
 			var self = this;
-			var entity = new AuthEntity({
-				perms: {
-					users: {
-						read: true,
-						update: 'ifOwn',
-						delete: 'ifOwn'
-					}
-				}
-			});
+			var entity = new AuthEntity();
 
-			entity.save(function(err, entity) {
+			entity.addRole('user', function(err) {
 				if (err) {
 					return next(err);
 				}
 
-				self.auth = entity;
-				next();
+				entity.save(function(err, entity) {
+					if (err) {
+						return next(err);
+					}
+
+					self.auth = entity;
+					next();
+				});
 			});
 		},
 
 		// 
 		// Send an email when new users are created
 		// 
-		'post::create': function() {
+		'post::create': function(user) {
 			// 
 			// TODO
 			//   Actually send email
 			// 
-			console.log('Send Email');
 		}
 	},
 
@@ -103,9 +100,8 @@ var User = app.models.create('users', {
 		// 
 		// Determines if the user referred to in the given request object is this one
 		// 
-		ifOwn: function(req) {
-			var id = req.params.usersId;
-			return id === this._id;
+		ifOwns: function(promise, req) {
+			promise.resolve(true);
 		}
 	},
 

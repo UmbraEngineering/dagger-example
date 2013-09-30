@@ -34,7 +34,7 @@ module.exports = {
 		// 
 		// Should Dagger.js add coloring to log messages?
 		// 
-		colorOutput: false
+		colorOutput: true
 	},
 
 	// 
@@ -43,6 +43,20 @@ module.exports = {
 	// trouble then they normally would, but could result in downtime if the error is not corrected.
 	// 
 	strictMode: true,
+
+// -------------------------------------------------------------
+
+	app: {
+		// 
+		// Should /schema endpoints be created for each model?
+		// 
+		schemaEndpoints: true,
+
+		// 
+		// Should the endpoint "/" give an index of all models and endpoints?
+		// 
+		indexEndpoint: true
+	},
 
 // -------------------------------------------------------------
 	
@@ -121,7 +135,7 @@ module.exports = {
 		// 
 		// The user unique index field (eg. username)
 		// 
-		userField: 'email',
+		userField: 'username',
 
 		// 
 		// The field that passwords are stored in, and the property sent to the server
@@ -157,15 +171,7 @@ module.exports = {
 		// 
 		// Time-to-live for auth tokens
 		// 
-		authTokenTTL: '1hr',
-
-		// 
-		// A routine for testing if the given user has the given permissions
-		//   function(user, [perms, ...], promise)
-		// 
-		hasPermissions: function(user, permissions, promise) {
-			user.hasPermissions(permissions, promise);
-		}
+		authTokenTTL: '1hr'
 	}
 
 };
