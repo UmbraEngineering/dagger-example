@@ -11,6 +11,8 @@ var List = app.models.require('lists');
 // 
 var Item = app.models.create('items', {
 
+	public: true,
+
 	schema: {
 		value: String,
 		completed: {type: Boolean, default: false}

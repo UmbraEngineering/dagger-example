@@ -18,8 +18,16 @@ app.models.require('items');
 var List = app.models.create('lists', {
 
 	schema: {
-		owner: [{type: ObjectId, ref: 'users'}],
+		owner: {type: ObjectId, ref: 'users'},
 		items: [{type: ObjectId, ref: 'items'}]
+	},
+
+	hooks: {
+		// Always make sure that the owner of the list is the user that created it
+		'pre::post': function(req, done) {
+			req.body.owner = req.auth.user._id;
+			done();
+		}
 	}
 
 });

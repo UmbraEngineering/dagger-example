@@ -98,9 +98,18 @@ var User = app.models.create('users', {
 		},
 
 		// 
-		// Determines if the user referred to in the given request object is this one
+		// Restrict requests to only objects owned by the user
 		// 
 		ifOwns: function(promise, req) {
+			req.params.filter = {owner: this._id};
+			promise.resolve(true);
+		},
+
+		// 
+		// Restrict requests to only the active user
+		// 
+		ifSelf: function(promise, req) {
+			req.params.filter = {_id: this._id};
 			promise.resolve(true);
 		}
 	},
