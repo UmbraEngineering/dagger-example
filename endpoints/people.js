@@ -3,6 +3,7 @@ var dagger     = require('dagger.js');
 var models     = dagger.require('models');
 var Endpoint   = dagger.require('endpoint');
 var HttpError  = dagger.require('http-meta').HttpError;
+var conf       = dagger.require('conf');
 
 var Person = models.require('person').model;
 
@@ -14,7 +15,10 @@ var PeopleEndpoint = module.exports = new Endpoint({
 	// GET /people/schema
 	// 
 	"get /schema": function(req) {
-		req.send(200, Person.schemaDescription());
+		if (! conf.output.schemaEndpoints) {
+			return (new HttpError(404, 'Cannot get ' + req.pathname)).send(req);
+		}
+		req.respond(200, Person.schemaDescription());
 	},
 
 	// 
@@ -28,7 +32,7 @@ var PeopleEndpoint = module.exports = new Endpoint({
 					// NOTE: Authorization should be done here
 					// 
 
-					req.send(200, docs.map(Person.serialize));
+					req.respond(200, docs.map(Person.serialize));
 				},
 				HttpError.catch(req)
 			);
@@ -49,7 +53,7 @@ var PeopleEndpoint = module.exports = new Endpoint({
 					// NOTE: Authorization should be done here
 					// 
 
-					req.send(200, Person.serialize(doc));
+					req.respond(200, Person.serialize(doc));
 				},
 				HttpError.catch(req)
 			);
@@ -66,7 +70,7 @@ var PeopleEndpoint = module.exports = new Endpoint({
 		Person.create(req.body)
 			.then(
 				function(doc) {
-					req.send(200, Person.serialize(doc));
+					req.respond(200, Person.serialize(doc));
 				},
 				HttpError.catch(req)
 			);
@@ -110,7 +114,7 @@ var PeopleEndpoint = module.exports = new Endpoint({
 			})
 			.then(
 				function(docs) {
-					req.send(200, docs.map(Person.serialize));
+					req.respond(200, docs.map(Person.serialize));
 				},
 				HttpError.catch(req)
 			);
@@ -135,7 +139,7 @@ var PeopleEndpoint = module.exports = new Endpoint({
 			})
 			.then(
 				function(doc) {
-					req.send(200, Person.serialize(doc));
+					req.respond(200, Person.serialize(doc));
 				},
 				HttpError.catch(req)
 			);
@@ -174,7 +178,7 @@ var PeopleEndpoint = module.exports = new Endpoint({
 			})
 			.then(
 				function() {
-					req.send(200);
+					req.respond(200);
 				},
 				HttpError.catch(req)
 			);
@@ -206,7 +210,7 @@ var PeopleEndpoint = module.exports = new Endpoint({
 			})
 			.then(
 				function() {
-					req.send(200);
+					req.respond(200);
 				},
 				HttpError.catch(req)
 			);
